@@ -1,15 +1,36 @@
 const { response } = require('express');
+const User = require('../models/User');
 
-const signUp = (req, res = response) => {
-    const { name, email, password } = req.body;
+const signUp = async(req, res = response) => {
+    const { email } = req.body;
 
-    res.status(201).json({
-        ok: true,
-        msg: 'Sign Up',
-        name,
-        email,
-        password
-    });
+    try {        
+        const user = await User.findOne({ email });
+
+        if(user) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Email is already registered'
+            });
+        }
+
+        const newUser = new User(req.body);
+        await newUser.save();
+    
+        res.status(201).json({
+            ok: true,
+            uid: newUser.id,
+            name: newUser.name
+        });
+
+    } catch (error) {
+        // console.log(error);
+
+        res.status(500).json({
+            ok: false,
+            msg: 'An error occurred, please try again later'
+        })
+    }
 }
 
 const login = (req, res = response) => {
@@ -17,9 +38,7 @@ const login = (req, res = response) => {
 
     res.json({
         ok: true,
-        msg: 'Log In',
-        email,
-        password
+        msg: 'Log In'
     });
 }
 
