@@ -84,15 +84,18 @@ const login = async(req, res = response) => {
 
 }
 
-const validateToken = (req, res = response) => {
+const revalidateToken = async(req, res = response) => {
+    const { uid, name } = req;
+    const token = await generateJWT(uid, name);
+
     res.json({
         ok: true,
-        msg: 'Validate Token'
+        token
     });
 }
 
 module.exports = {
     signUp,
     login,
-    validateToken
+    revalidateToken
 }
