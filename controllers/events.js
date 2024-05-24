@@ -87,11 +87,35 @@ const updateEvent = async(req, res = response) => {
 }
 
 const deleteEvent = async(req, res = response) => {
+    const eventId = req.params.id;
+    const uid = req.uid;
+
     try {        
+        const event = await Event.findById(eventId);
+
+        if(!event) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Event not found'
+            });
+        }
+
+        if(event.user.toString() !== uid) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'No delete permissions'
+            });
+        }
+
+        const newEvent = {
+            ...req.body,
+            user: uid
+        };
+
+        await Event.findByIdAndDelete(eventId, newEvent, { new: true });
 
         res.json({
             ok: true,
-            msg: 'deleteEvent'
         });
 
     } catch (error) {
