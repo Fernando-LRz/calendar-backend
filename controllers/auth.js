@@ -13,7 +13,7 @@ const signUp = async(req, res = response) => {
         if(user) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Email is already registered'
+                msg: 'The email is already registered'
             });
         }
 
@@ -60,7 +60,7 @@ const login = async(req, res = response) => {
         if(!validPassword) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Password is incorrect'
+                msg: 'The password is incorrect'
             });
         }
 
