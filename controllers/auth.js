@@ -38,7 +38,7 @@ const signUp = async(req, res = response) => {
         res.status(500).json({
             ok: false,
             msg: 'An error occurred, please try again later'
-        })
+        });
     }
 }
 
@@ -79,7 +79,7 @@ const login = async(req, res = response) => {
         res.status(500).json({
             ok: false,
             msg: 'An error occurred, please try again later'
-        })
+        });
     }
 
 }
